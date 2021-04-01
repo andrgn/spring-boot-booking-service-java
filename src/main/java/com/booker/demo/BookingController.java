@@ -90,6 +90,7 @@ public class BookingController {
 
     @DeleteMapping("/bookings/{id}")
     public ResponseEntity<EntityModel<Booking>> deleteBooking(@PathVariable Long id) {
+        
         repository.deleteById(id);
 
         return ResponseEntity.noContent().build();
