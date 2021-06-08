@@ -29,11 +29,11 @@ public class BookingController {
     @GetMapping("/bookings")
     public ResponseEntity<CollectionModel<EntityModel<Booking>>> getAllBookings() {
 
-        List<EntityModel<Booking>> bookings = repository.findAll().stream()
+        var bookings = repository.findAll().stream()
                 .map(assembler::toModel)
                 .collect(Collectors.toList());
 
-        CollectionModel<EntityModel<Booking>> collectionModel = CollectionModel.of(bookings,
+        var collectionModel = CollectionModel.of(bookings,
                 linkTo(methodOn(BookingController.class).getAllBookings()).withSelfRel());
 
         return ResponseEntity.ok(collectionModel);
@@ -44,7 +44,7 @@ public class BookingController {
 
         BookingDatesChecker.checkoutIsBeforeCheckin(newBooking);
 
-        EntityModel<Booking> entityModel = assembler.toModel(repository.save(newBooking));
+        var entityModel = assembler.toModel(repository.save(newBooking));
 
         return ResponseEntity
                 .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
@@ -54,10 +54,10 @@ public class BookingController {
     @GetMapping("/bookings/{id}")
     public ResponseEntity<EntityModel<Booking>> getBooking(@PathVariable Long id) {
 
-        Booking booking = repository.findById(id)
+        var booking = repository.findById(id)
                 .orElseThrow(() -> new BookingNotFoundException(id));
 
-        EntityModel<Booking> entityModel = assembler.toModel(booking);
+        var entityModel = assembler.toModel(booking);
 
         return ResponseEntity.ok(entityModel);
     }
@@ -67,7 +67,7 @@ public class BookingController {
 
         BookingDatesChecker.checkoutIsBeforeCheckin(newBooking);
 
-        Booking updatedBooking = repository.findById(id)
+        var updatedBooking = repository.findById(id)
                 .map(booking -> {
                     booking.setFirstName(newBooking.getFirstName());
                     booking.setLastName(newBooking.getLastName());
@@ -81,7 +81,7 @@ public class BookingController {
                     return repository.save(newBooking);
                 });
 
-        EntityModel<Booking> entityModel = assembler.toModel(updatedBooking);
+        var entityModel = assembler.toModel(updatedBooking);
 
         return ResponseEntity
                 .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())

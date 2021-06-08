@@ -14,7 +14,7 @@ public class LoadDatabase {
 
     @Bean
     CommandLineRunner initDatabase(BookingRepository repository) {
-        Booking booking = new Booking()
+        var booking = new Booking()
                 .setFirstName("John")
                 .setLastName("Jackson")
                 .setTotalPrice(123)
